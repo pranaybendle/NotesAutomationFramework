@@ -1,0 +1,25 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Master Suite" parallel="false">
+
+    <!-- UI Cucumber -->
+    <test name="UI Tests">
+        <classes>
+            <class name="runners.TestRunner"/>
+        </classes>
+    </test>
+
+    <!-- API Tests -->
+    <test name="API Tests">
+        <packages>
+            <package name="tests.api"/>
+        </packages>
+    </test>
+
+    <!-- E2E Tests -->
+    <test name="E2E Tests">
+        <packages>
+            <package name="tests.e2e"/>
+        </packages>
+    </test>
+
+</suite>
