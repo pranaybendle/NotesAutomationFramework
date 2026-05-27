@@ -9,7 +9,7 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                git 'https://github.com/pranaybendle/NotesAutomationFramework.git'
+                git branch: 'main', url: 'https://github.com/pranaybendle/NotesAutomationFramework.git'
             }
         }
 
