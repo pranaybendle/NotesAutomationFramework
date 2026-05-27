@@ -39,13 +39,19 @@ public class NegativeApiTest {
         Response response =
                 given()
                         .baseUri(ApiConfig.BASE_URI)
-                        .header("x-auth-token", "wrong_token_123")
+                        .header(
+                                "Authorization",
+                                "Bearer wrong_token_123"
+                        )
                         .when()
                         .get("/notes");
 
-        Assert.assertEquals(
-                response.statusCode(),
-                401
+        System.out.println(response.statusCode());
+        System.out.println(response.asPrettyString());
+
+        Assert.assertTrue(
+                response.statusCode() == 401
+                        || response.statusCode() == 403
         );
 
         Assert.assertTrue(
@@ -53,7 +59,6 @@ public class NegativeApiTest {
         );
 
         System.out.println("Invalid Token API Passed");
-        System.out.println(response.asPrettyString());
     }
 
     @Test

@@ -1,11 +1,11 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="Master Suite" parallel="false">
+<suite name="Master Suite" parallel="tests" thread-count="3">
 
     <!-- UI Cucumber -->
     <test name="UI Tests">
-        <classes>
-            <class name="runners.TestRunner"/>
-        </classes>
+        <packages>
+            <package name="tests.ui"/>
+        </packages>
     </test>
 
     <!-- API Tests -->

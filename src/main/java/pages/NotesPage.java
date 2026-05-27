@@ -4,6 +4,7 @@ import drivers.DriverFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import utils.WaitUtils;
@@ -152,32 +153,53 @@ public class NotesPage {
 
     // ---- Edit ----
 
-    public void editNote(String oldTitle, String newTitle, String newDesc) {
-        var editBtn = WaitUtils.waitForVisible(editButton(oldTitle));
+    public void editNote(String oldTitle,
+                         String newTitle,
+                         String newDesc) {
+
+        // Click edit button
+        By editLocator = editButton(oldTitle);
+
+        WebElement editBtn =
+                WaitUtils.waitForClickable(editLocator);
+
         jsScrollAndClick(editBtn);
 
-        // Title field — retry on stale
-        for (int i = 0; i < 3; i++) {
-            try {
-                var titleField = WaitUtils.waitForVisible(editTitleField);
-                titleField.clear();
-                titleField.sendKeys(newTitle);
-                break;
-            } catch (org.openqa.selenium.StaleElementReferenceException ignored) {}
+        // Wait for modal/form
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
-        // Description field — retry on stale
-        for (int i = 0; i < 3; i++) {
-            try {
-                var descField = WaitUtils.waitForVisible(editDescriptionField);
-                descField.clear();
-                descField.sendKeys(newDesc);
-                break;
-            } catch (org.openqa.selenium.StaleElementReferenceException ignored) {}
-        }
+        // Update title
+        WebElement titleField =
+                WaitUtils.waitForVisible(editTitleField);
 
-        var updateBtn = WaitUtils.waitForClickable(updateButton);
+        titleField.clear();
+        titleField.sendKeys(newTitle);
+
+        // Update description
+        WebElement descField =
+                WaitUtils.waitForVisible(editDescriptionField);
+
+        descField.clear();
+        descField.sendKeys(newDesc);
+
+        // Click update
+        WebElement updateBtn =
+                WaitUtils.waitForClickable(updateButton);
+
         jsScrollAndClick(updateBtn);
+
+        // Wait after update
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        driver.navigate().refresh();
     }
 
     // ---- Category Filter ----

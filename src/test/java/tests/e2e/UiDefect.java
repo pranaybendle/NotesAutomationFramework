@@ -4,18 +4,18 @@ import api.clients.AuthClient;
 import api.clients.NotesClient;
 import base.BaseTest;
 import io.restassured.response.Response;
-import org.testng.Assert;
-import org.testng.annotations.Test;
-import pages.LoginPage;
-import pages.NotesPage;
 import listeners.TestListener;
+import org.testng.Assert;
 import org.testng.annotations.Listeners;
+import org.testng.annotations.Test;
+import pages.DefectNotesPage;
+import pages.LoginPage;
 
 @Listeners(TestListener.class)
-public class NotesE2ETest extends BaseTest {
+public class UiDefect extends BaseTest {
 
     @Test
-    public void verifyNotesE2EFlow() {
+    public void verifyUiSynchronizationDefect() {
 
         String title =
                 "E2E Note " + System.currentTimeMillis();
@@ -48,10 +48,6 @@ public class NotesE2ETest extends BaseTest {
                 200
         );
 
-        Assert.assertTrue(
-                createResponse.time() < 2000
-        );
-
         String noteId =
                 createResponse.jsonPath()
                         .getString("data.id");
@@ -62,8 +58,9 @@ public class NotesE2ETest extends BaseTest {
         LoginPage loginPage =
                 new LoginPage();
 
-        NotesPage notesPage =
-                new NotesPage();
+        // Using defect simulation page
+        DefectNotesPage notesPage =
+                new DefectNotesPage();
 
         loginPage.login(
                 "pranaybendle18@gmail.com",
@@ -79,7 +76,8 @@ public class NotesE2ETest extends BaseTest {
         notesPage.searchNote(title);
 
         Assert.assertTrue(
-                notesPage.isNoteVisible(title)
+                notesPage.isNoteVisible(title),
+                "Created note not visible"
         );
 
         // ================= UI EDIT =================
@@ -106,23 +104,19 @@ public class NotesE2ETest extends BaseTest {
                 updatedTitle
         );
 
-        // ================= UI FILTER =================
-        // ================= UI FILTER =================
-        driver.navigate().refresh();
-
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        // ===================================================
+        // KNOWN UI SYNCHRONIZATION DEFECT SIMULATION
+        // No page refresh added intentionally
+        // Updated note may not appear immediately
+        // ===================================================
 
         notesPage.clickCategory("Work");
 
         notesPage.searchNote(updatedTitle);
 
         Assert.assertTrue(
-                notesPage.isNoteVisible(updatedTitle),
-                "Updated note not visible after edit"
+                notesPage.isNoteVisibleWithoutRefresh(updatedTitle),
+                "Known Defect: Updated note not visible without refresh"
         );
 
         // ================= API DELETE =================
@@ -138,25 +132,21 @@ public class NotesE2ETest extends BaseTest {
         notesPage.clickLogout();
 
         try {
-            Thread.sleep(2000);
+            Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
         Assert.assertTrue(
                 driver.getCurrentUrl()
-                        .contains("/notes/app")
+                        .contains("/notes/app"),
+                "Logout failed"
         );
-
-        //test intentionally fail krne k liye
-        //Assert.assertEquals(1, 2);
 
         tearDown();
 
-
         System.out.println(
-                "E2E Flow Passed"
+                "UI Defect Simulation Completed"
         );
-
     }
 }

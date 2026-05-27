@@ -13,7 +13,6 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <cucumber.version>7.18.0</cucumber.version>
         <allure.version>2.29.0</allure.version>
     </properties>
 
@@ -23,7 +22,7 @@
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>4.22.0</version>
+            <version>4.31.0</version>
         </dependency>
 
         <!-- TestNG -->
@@ -34,27 +33,14 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Cucumber -->
-        <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-java</artifactId>
-            <version>${cucumber.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-testng</artifactId>
-            <version>${cucumber.version}</version>
-        </dependency>
-
-        <!-- RestAssured -->
+        <!-- Rest Assured -->
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
             <version>5.5.0</version>
         </dependency>
 
-        <!-- JSON Schema -->
+        <!-- JSON Schema Validator -->
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>json-schema-validator</artifactId>
@@ -68,7 +54,7 @@
             <version>5.9.2</version>
         </dependency>
 
-        <!-- Logging -->
+        <!-- Log4j -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
@@ -81,6 +67,19 @@
             <version>2.23.1</version>
         </dependency>
 
+        <!-- SLF4J -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.13</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>2.0.13</version>
+        </dependency>
+
         <!-- Allure -->
         <dependency>
             <groupId>io.qameta.allure</groupId>
@@ -88,10 +87,11 @@
             <version>${allure.version}</version>
         </dependency>
 
+        <!-- Extent Reports -->
         <dependency>
-            <groupId>io.qameta.allure</groupId>
-            <artifactId>allure-cucumber7-jvm</artifactId>
-            <version>${allure.version}</version>
+            <groupId>com.aventstack</groupId>
+            <artifactId>extentreports</artifactId>
+            <version>5.1.1</version>
         </dependency>
 
         <!-- Commons IO -->
@@ -101,27 +101,22 @@
             <version>2.16.1</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <version>2.0.13</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.aventstack</groupId>
-            <artifactId>extentreports</artifactId>
-            <version>5.1.1</version>
-        </dependency>
-
     </dependencies>
 
     <build>
         <plugins>
+
+            <!-- Maven Surefire Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
+
                 <configuration>
+                    <suiteXmlFiles>
+                        <suiteXmlFile>testng.xml</suiteXmlFile>
+                    </suiteXmlFiles>
+
                     <systemPropertyVariables>
                         <allure.results.directory>
                             ${project.build.directory}/allure-results
@@ -129,6 +124,8 @@
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
+
 </project>
