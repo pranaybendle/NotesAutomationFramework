@@ -1,3 +1,4 @@
+```groovy
 pipeline {
     agent any
 
@@ -9,7 +10,8 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/pranaybendle/NotesAutomationFramework.git'
+                git branch: 'main',
+                url: 'https://github.com/pranaybendle/NotesAutomationFramework.git'
             }
         }
 
@@ -21,7 +23,23 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                bat 'mvn test'
+
+                script {
+
+                    try {
+
+                        bat 'mvn test'
+
+                    } catch (Exception e) {
+
+                        currentBuild.result = 'UNSTABLE'
+
+                        echo 'Some tests failed. Marking build as UNSTABLE.'
+
+                    }
+
+                }
+
             }
         }
 
@@ -35,12 +53,18 @@ pipeline {
     }
 
     post {
+
         always {
-            archiveArtifacts artifacts: 'target/screenshots/*.png', allowEmptyArchive: true
+            archiveArtifacts artifacts: 'target/screenshots/*.png',
+            allowEmptyArchive: true
         }
 
         success {
             echo 'Build Successful!'
+        }
+
+        unstable {
+            echo 'Build Unstable - Some tests failed!'
         }
 
         failure {
@@ -48,3 +72,4 @@ pipeline {
         }
     }
 }
+```
