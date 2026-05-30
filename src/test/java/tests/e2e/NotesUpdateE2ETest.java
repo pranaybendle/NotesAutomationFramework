@@ -12,7 +12,7 @@ import listeners.TestListener;
 import org.testng.annotations.Listeners;
 
 @Listeners(TestListener.class)
-public class NotesE2ETest extends BaseTest {
+public class NotesUpdateE2ETest extends BaseTest {
 
     @Test
     public void verifyNotesE2EFlow() {
