@@ -23,7 +23,7 @@ public class ScreenshotUtils {
 
         String path =
                 "reports/screenshots/"
-                      lc  + testName + "_"
+                        + testName + "_"
                         + LocalDateTime.now()
                         .toString()
                         .replace(":", "-")
