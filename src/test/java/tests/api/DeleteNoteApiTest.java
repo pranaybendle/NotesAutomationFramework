@@ -14,13 +14,11 @@ public class DeleteNoteApiTest {
         String title =
                 "Delete API Note " + System.currentTimeMillis();
 
-        // ================= LOGIN =================
         AuthClient.login(
                 "pranaybendle18@gmail.com",
                 "pass@123"
         );
 
-        // ================= CREATE NOTE =================
         Response createResponse =
                 NotesClient.createNote(
                         title,
@@ -37,26 +35,21 @@ public class DeleteNoteApiTest {
                 createResponse.jsonPath()
                         .getString("data.id");
 
-        // ================= DELETE NOTE =================
         Response deleteResponse =
                 NotesClient.deleteNote(noteId);
 
-        // status validation
         Assert.assertEquals(
                 deleteResponse.statusCode(),
                 200
         );
 
-        // response time validation
         Assert.assertTrue(
                 deleteResponse.time() < 2000,
                 "API response took more than 2 sec"
         );
 
-        // noteId validation
         Assert.assertNotNull(noteId);
 
-        // ================= VERIFY DELETED =================
         Response notesResponse =
                 NotesClient.getAllNotes();
 

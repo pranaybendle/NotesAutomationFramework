@@ -7,7 +7,6 @@ pipeline {
         allure 'Allure'
     }
 
-
     stages {
 
         stage('Checkout') {

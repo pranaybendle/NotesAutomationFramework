@@ -19,7 +19,6 @@ public class NotesPage {
         this.driver = DriverFactory.getDriver();
     }
 
-    // Locators
     private final By openAddNoteButton =
             By.xpath("//button[contains(text(),'Add Note')]");
 
@@ -48,7 +47,7 @@ public class NotesPage {
     private final By searchInput  = By.id("search-input");
     private final By searchButton = By.cssSelector("button[data-testid='search-btn']");
 
-    // Dynamic locators
+
     private By noteTitle(String title) {
         return By.xpath("//*[contains(text(),'" + title + "')]");
     }
@@ -73,12 +72,11 @@ public class NotesPage {
         );
     }
 
-    // ---- Note Creation ----
 
     public void clickAddNote() {
         var addBtn = WaitUtils.waitForVisible(openAddNoteButton);
         jsScrollAndClick(addBtn);
-        jsClick(By.xpath("//button[contains(text(),'Add Note')]")); // safety re-click
+        jsClick(By.xpath("//button[contains(text(),'Add Note')]"));
     }
 
     public void enterTitle(String title) {
@@ -105,7 +103,6 @@ public class NotesPage {
         clickSave();
     }
 
-    // ---- Note Visibility ----
 
     public boolean isNoteVisible(String title) {
         return WaitUtils.waitForVisible(noteTitle(title)).isDisplayed();
@@ -115,20 +112,13 @@ public class NotesPage {
     public boolean isNoteNotVisible(String title) {
         try { Thread.sleep(2000); } catch (InterruptedException ignored) {}
 
-        // Use contains on card title h5 — exact match on class avoids timing issues
         By noteTitleLocator = By.xpath(
                 "//div[contains(@class,'card')]//h5[contains(text(),'" + title + "')]"
         );
         return driver.findElements(noteTitleLocator).isEmpty();
     }
 
-    // ---- Search ----
 
-    /**
-     * Types into search and clicks the search button.
-     * After search, waits briefly for results to settle — does NOT assert a card exists.
-     * Call isNoteVisible() or isNoteNotVisible() separately to assert.
-     */
     public void searchNote(String title) {
         var input = WaitUtils.waitForVisible(searchInput);
         input.clear();
@@ -137,11 +127,9 @@ public class NotesPage {
         var btn = WaitUtils.waitForClickable(searchButton);
         jsScrollAndClick(btn);
 
-        // Brief pause for search results to render (no hard assert on card presence)
+
         try { Thread.sleep(2000); } catch (InterruptedException ignored) {}
     }
-
-    // ---- Delete ----
 
     public void deleteNote(String title) {
         var deleteBtn = driver.findElement(deleteButton(title));
@@ -151,13 +139,11 @@ public class NotesPage {
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", confirmBtn);
     }
 
-    // ---- Edit ----
 
     public void editNote(String oldTitle,
                          String newTitle,
                          String newDesc) {
 
-        // Click edit button
         By editLocator = editButton(oldTitle);
 
         WebElement editBtn =
@@ -165,34 +151,29 @@ public class NotesPage {
 
         jsScrollAndClick(editBtn);
 
-        // Wait for modal/form
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        // Update title
         WebElement titleField =
                 WaitUtils.waitForVisible(editTitleField);
 
         titleField.clear();
         titleField.sendKeys(newTitle);
 
-        // Update description
         WebElement descField =
                 WaitUtils.waitForVisible(editDescriptionField);
 
         descField.clear();
         descField.sendKeys(newDesc);
 
-        // Click update
         WebElement updateBtn =
                 WaitUtils.waitForClickable(updateButton);
 
         jsScrollAndClick(updateBtn);
 
-        // Wait after update
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
@@ -202,7 +183,7 @@ public class NotesPage {
         driver.navigate().refresh();
     }
 
-    // ---- Category Filter ----
+
 
     public void clickCategory(String category) {
         var btn = WaitUtils.waitForVisible(categoryButton(category));
@@ -210,14 +191,12 @@ public class NotesPage {
         try { Thread.sleep(2000); } catch (InterruptedException ignored) {}
     }
 
-    // ---- Logout ----
 
     public void clickLogout() {
         var logoutBtn = WaitUtils.waitForVisible(logoutButton);
         jsScrollAndClick(logoutBtn);
     }
 
-    // ---- Helpers ----
 
     private void jsScrollAndClick(org.openqa.selenium.WebElement el) {
         JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -226,7 +205,6 @@ public class NotesPage {
     }
 
     private void jsClick(By locator) {
-        // no-op if element not present
         var els = driver.findElements(locator);
         if (!els.isEmpty()) {
             ((JavascriptExecutor) driver).executeScript("arguments[0].click();", els.get(0));

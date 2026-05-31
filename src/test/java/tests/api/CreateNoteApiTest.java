@@ -23,19 +23,16 @@ public class CreateNoteApiTest {
                         "Work"
                 );
 
-        // Status validation
         Assert.assertEquals(
                 response.statusCode(),
                 200
         );
 
-        // Response time validation (<2 sec)
         Assert.assertTrue(
                 response.time() < 2000,
                 "API response took more than 2 sec"
         );
 
-        // Data validation
         Assert.assertNotNull(
                 response.jsonPath()
                         .getString("data.id")

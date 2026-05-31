@@ -25,20 +25,20 @@ public class WaitUtils {
         ).until(ExpectedConditions.elementToBeClickable(locator));
     }
 
-    public static boolean waitForInvisibility(By locator) {
-        return new WebDriverWait(
-                DriverFactory.getDriver(),
-                Duration.ofSeconds(TIMEOUT)
-        ).until(ExpectedConditions.invisibilityOfElementLocated(locator));
-    }
+//    public static boolean waitForInvisibility(By locator) {
+//        return new WebDriverWait(
+//                DriverFactory.getDriver(),
+//                Duration.ofSeconds(TIMEOUT)
+//        ).until(ExpectedConditions.invisibilityOfElementLocated(locator));
+//    }
 
-    public static void waitForPageLoad() {
-        WebDriver driver = DriverFactory.getDriver();
-
-        new WebDriverWait(driver, Duration.ofSeconds(TIMEOUT))
-                .until(webDriver ->
-                        ((JavascriptExecutor) webDriver)
-                                .executeScript("return document.readyState")
-                                .equals("complete"));
-    }
+//    public static void waitForPageLoad() {
+//        WebDriver driver = DriverFactory.getDriver();
+//
+//        new WebDriverWait(driver, Duration.ofSeconds(TIMEOUT))
+//                .until(webDriver ->
+//                        ((JavascriptExecutor) webDriver)
+//                                .executeScript("return document.readyState")
+//                                .equals("complete"));
+//    }
 }

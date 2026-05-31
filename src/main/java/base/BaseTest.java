@@ -12,7 +12,6 @@ public class BaseTest {
         DriverFactory.initializeDriver();
         driver = DriverFactory.getDriver();
 
-        // old browser state remove
         driver.manage().deleteAllCookies();
 
         driver.get(

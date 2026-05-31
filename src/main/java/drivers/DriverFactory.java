@@ -13,7 +13,7 @@ public class DriverFactory {
     private static final ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 
     public static void initializeDriver() {
-        // Always quit any existing session first — prevents stale browser reuse
+
         if (driver.get() != null) {
             try { driver.get().quit(); } catch (Exception ignored) {}
             driver.remove();
@@ -24,8 +24,7 @@ public class DriverFactory {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--disable-notifications");
         options.addArguments("--disable-popup-blocking");
-        // Uncomment below for headless CI:
-        // options.addArguments("--headless=new", "--no-sandbox", "--disable-dev-shm-usage");
+
 
         WebDriver webDriver = new ChromeDriver(options);
         webDriver.manage().window().maximize();

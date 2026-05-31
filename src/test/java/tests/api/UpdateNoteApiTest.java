@@ -17,13 +17,11 @@ public class UpdateNoteApiTest {
         String updatedTitle =
                 "Updated API Note";
 
-        // ================= LOGIN =================
         AuthClient.login(
                 "pranaybendle18@gmail.com",
                 "pass@123"
         );
 
-        // ================= CREATE NOTE =================
         Response createResponse =
                 NotesClient.createNote(
                         title,
@@ -40,7 +38,6 @@ public class UpdateNoteApiTest {
                 createResponse.jsonPath()
                         .getString("data.id");
 
-        // ================= UPDATE NOTE =================
         Response updateResponse =
                 NotesClient.updateNote(
                         noteId,
@@ -50,19 +47,16 @@ public class UpdateNoteApiTest {
                         false
                 );
 
-        // status validation
         Assert.assertEquals(
                 updateResponse.statusCode(),
                 200
         );
 
-        // response time validation
         Assert.assertTrue(
                 updateResponse.time() < 2000,
                 "API response took more than 2 sec"
         );
 
-        // updated data validation
         Assert.assertEquals(
                 updateResponse.jsonPath()
                         .getString("data.title"),
@@ -75,7 +69,6 @@ public class UpdateNoteApiTest {
                 "Work"
         );
 
-        // ================= VERIFY FROM GET =================
         Response notesResponse =
                 NotesClient.getAllNotes();
 

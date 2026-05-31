@@ -19,28 +19,25 @@ public class NotesApiTest {
         Response response =
                 NotesClient.getAllNotes();
 
-        // status validation
         Assert.assertEquals(
                 response.statusCode(),
                 200
         );
 
-        // response time validation
         Assert.assertTrue(
                 response.time() < 2000,
                 "API response took more than 2 sec"
         );
 
-        // notes data validation
         Assert.assertNotNull(
                 response.jsonPath().getList("data")
         );
 
-        Assert.assertTrue(
-                response.jsonPath()
-                        .getList("data")
-                        .size() >= 0
-        );
+//        Assert.assertTrue(
+//                response.jsonPath()
+//                        .getList("data")
+//                        .size() >= 0
+//        );
 
         System.out.println(
                 "Status Code: " +

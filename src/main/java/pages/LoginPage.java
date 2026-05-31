@@ -13,11 +13,9 @@ public class LoginPage {
         this.driver = DriverFactory.getDriver();
     }
 
-    // Landing page
     private final By loginLandingButton =
             By.xpath("//a[normalize-space()='Login']");
 
-    // Login form
     private final By emailInput =
             By.name("email");
 
@@ -27,7 +25,6 @@ public class LoginPage {
     private final By signInButton =
             By.xpath("//button[@type='submit']");
 
-    // Dashboard
     private final By addNoteButton =
             By.xpath("//button[contains(text(),'Add Note')]");
 
@@ -38,11 +35,11 @@ public class LoginPage {
     public void openLoginForm() {
         var loginBtn = WaitUtils.waitForClickable(loginLandingButton);
 
-        // scroll to button
+
         ((org.openqa.selenium.JavascriptExecutor) driver)
                 .executeScript("arguments[0].scrollIntoView(true);", loginBtn);
 
-        // JS click (bypasses overlay/intercept)
+
         ((org.openqa.selenium.JavascriptExecutor) driver)
                 .executeScript("arguments[0].click();", loginBtn);
     }
@@ -60,17 +57,17 @@ public class LoginPage {
     public void clickSignIn() {
         var signInBtn = WaitUtils.waitForClickable(signInButton);
 
-        // scroll into view
+
         ((org.openqa.selenium.JavascriptExecutor) driver)
                 .executeScript("arguments[0].scrollIntoView({block:'center'});", signInBtn);
 
-        // safer JS click
+
         ((org.openqa.selenium.JavascriptExecutor) driver)
                 .executeScript("arguments[0].click();", signInBtn);
     }
 
     public void login(String email, String password) {
-        openLoginForm();   // IMPORTANT FIX
+        openLoginForm();
         enterEmail(email);
         enterPassword(password);
         clickSignIn();
